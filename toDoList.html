@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dad's To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7fa;
+            color: #01579b;
+            padding: 20px;
+        }
+        h1 {
+            color: #0288d1; 
+            display: flex;
+            align-items: center;
+        }
+	h1 img {
+    	    margin-left: 10px;
+    	    width: 70px;
+   	    position: relative;
+  	    top: -20px;
+	    left: -20px; 
+	}
+
+	p.message {
+    	    font-size: 1.2em;
+    	    color: #0277bd; 
+    	    margin-bottom: 20px;
+    	    position: relative; 
+    	    top: -10px; 
+	}
+
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #0288d1;
+            border-radius: 5px;
+            width: 300px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #0288d1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        button:hover {
+            background-color: #0277bd;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #ffffff; 
+            border: 2px solid #0288d1;
+            border-radius: 5px;
+        }
+        li.completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dad's To-Do List
+        <img src="heart.png" alt="Heart"> 
+    </h1>
+
+    <p class="message">I love you, and I hope you have a great day!</p>
+
+    <input type="text" id="newItemInput" placeholder="Enter new task">
+    <button onclick="addItem()">Add Task</button>
+
+    <h2>Your Tasks:</h2>
+    <ul id="taskList"></ul>
+
+    <script>
+        let tasks = [];
+        let completionStatus = [];
+
+        function addItem() {
+            const newItem = document.getElementById('newItemInput').value;
+            if (newItem) {
+                tasks.push(newItem);
+                completionStatus.push(false);
+                document.getElementById('newItemInput').value = ''; // Clear input
+                displayTasks();
+            }
+        }
+
+        function removeItem(index) {
+            tasks.splice(index, 1);
+            completionStatus.splice(index, 1);
+            displayTasks();
+        }
+
+        function toggleComplete(index) {
+            completionStatus[index] = !completionStatus[index];
+            displayTasks();
+        }
+
+        function editTask(index) {
+            const newTask = prompt('Edit your task:', tasks[index]);
+            if (newTask) {
+                tasks[index] = newTask;
+                displayTasks();
+            }
+        }
+
+        function displayTasks() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.classList.toggle('completed', completionStatus[index]);
+
+                li.innerHTML = `
+                    ${task} 
+                    <button onclick="toggleComplete(${index})">${completionStatus[index] ? 'Unmark' : 'Complete'}</button>
+                    <button onclick="editTask(${index})">Edit</button>
+                    <button onclick="removeItem(${index})">Remove</button>
+                `;
+
+                taskList.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
+
+
